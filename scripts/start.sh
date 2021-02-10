@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set default level 1
-VALUE_L="1"
+VALUE_L="3"
 
 
 # get args level setting

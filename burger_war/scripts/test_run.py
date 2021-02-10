@@ -12,6 +12,7 @@ import math
 import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import actionlib_msgs
+
 #import rosre
 
 # Ref: https://hotblackrobotics.github.io/en/blog/2018/01/29/action-client-py/
@@ -22,15 +23,61 @@ import actionlib_msgs
 #import cv2
 
 
+import json
+import re
+from aruco_msgs.msg import MarkerArray
+from std_msgs.msg import String
+
+
 class NaviBot():
     def __init__(self):
         
         # velocity publisher
         self.vel_pub = rospy.Publisher('cmd_vel', Twist,queue_size=1)
         self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
+        self.target_id_sub = rospy.Subscriber('war_state', String, self.get_war_state)
 
+    def get_war_state(self, data):
+        path_w = '/home/satorunegishi/catkin_ws/src/burger_war/burger_war/scripts/get_war_state.json'
+        delword = ['\\n','\\',' ','\n']
+        joinword = ['\n','\n','\n','']
 
+        str_data = str(data)  
+        for (dw,jw) in zip(delword, joinword):
+            str_data = str_data.split(dw)
+            str_data = jw.join(str_data)
+        json_data = str_data[6:len(str_data)-1]
 
+        with open(path_w, mode='w') as f:
+            f.write(json_data)
+        
+        self.update_target_player()
+
+    def update_target_player(self): #target_state[6-17] -> [仮番号, 仮座標, ターゲット名, ターゲット取得プレイヤー]
+        path_r = '/home/satorunegishi/catkin_ws/src/burger_war/burger_war/scripts/get_war_state.json'
+        path_w = '/home/satorunegishi/catkin_ws/src/burger_war/burger_war/scripts/target_state.txt'
+
+        coordinate = [[-2,3],[-2,2],[2,3],[2,2],[-2,-2],[-2,-3],[2,-2],[2,-3],[0,1],[1,0],[-1,0],[0,-1]]
+        course = [6,5,8,9,3,2,11,12,7,10,4,1]
+
+        with open(path_r, mode='r') as f:
+            json_load = json.load(f)
+        
+        target_state = []
+
+        for n in range(18):
+            target_state_in = []
+            if n > 5:
+                target_state_in.append(course[n-6])
+                target_state_in.append(coordinate[n-6])
+            
+            target_state_in.append(json_load["targets"][n]["name"])
+            target_state_in.append(json_load["targets"][n]["player"])
+
+            target_state.append(target_state_in)
+
+        with open(path_w, mode='w') as f:
+            f.write(str(target_state))
 
     def setGoal(self,x,y,yaw):
         self.client.wait_for_server()
@@ -54,7 +101,13 @@ class NaviBot():
             rospy.logerr("Action server not available!")
             rospy.signal_shutdown("Action server not available!")
         else:
-            return self.client.get_result()        
+            return self.client.get_result()
+
+    def search_enemy(self):
+        
+
+    def decide_root(self):
+
 
     def updatePoint(self, direction):
         if direction > 0:
