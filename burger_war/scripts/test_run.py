@@ -24,6 +24,7 @@ import actionlib_msgs
 
 import json
 import re
+import os
 from aruco_msgs.msg import MarkerArray
 from std_msgs.msg import String
 
@@ -33,8 +34,10 @@ class NaviBot():
         self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         self.target_id_sub = rospy.Subscriber('war_state', String, self.get_war_state)
 
-    path_gws = '/home/satorunegishi/catkin_ws/src/burger_war/burger_war/scripts/get_war_state.json'
-    path_ts = '/home/satorunegishi/catkin_ws/src/burger_war/burger_war/scripts/target_state.txt'     
+    path_gws = os.path.dirname(__file__) + '/get_war_state.json'
+    path_ts = os.path.dirname(__file__) + '/target_state.txt'
+    # path_gws = '/home/satorunegishi/catkin_ws/src/burger_war/burger_war/scripts/get_war_state.json'
+    # path_ts = '/home/satorunegishi/catkin_ws/src/burger_war/burger_war/scripts/target_state.txt'     
 
     def get_war_state(self, data):
         delword = ['\\n','\\',' ','\n']
@@ -46,7 +49,7 @@ class NaviBot():
             str_data = jw.join(str_data)
         json_data = str_data[6:len(str_data)-1]
 
-        with open(self.path_gws, mode='w') as f:
+        with open(self.path_ts, mode='w') as f:
             f.write(json_data)
         
         self.update_target_player()
@@ -101,10 +104,11 @@ class NaviBot():
             return self.client.get_result()
 
     def search_enemy(self):
-        with open(self.path_ts, mode='r') as f:
-            for n in range(12):
-                if (status_log[n+6][3] == "n" or status_log[n+6][3] == "r") and f[n+6][3] == "b":
-                    print(">>>>>>>>>>>",f[n+6][2])
+        print("search_enemy!!")
+        # with open(self.path_ts, mode='r') as f:
+        #     for n in range(12):
+        #         if (status_log[n+6][3] == "n" or status_log[n+6][3] == "r") and f[n+6][3] == "b":
+        #             print(">>>>>>>>>>>",f[n+6][2])
 
     def updatePoint(self, direction):
         if direction > 0:
