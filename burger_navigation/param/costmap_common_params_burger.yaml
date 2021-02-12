@@ -4,7 +4,7 @@ raytrace_range: 3.0
 
 #footprint: [[-0.105, -0.105], [-0.105, 0.105], [0.041, 0.105], [0.041, -0.105]]
 #robot_radius: 0.1
-robot_radius: 0.075 #ロボットの定義円の大きさ
+robot_radius: 0.09 #ロボットの定義円の大きさ
 
 #inflation_radius: 0.8
 inflation_radius: 0.5
