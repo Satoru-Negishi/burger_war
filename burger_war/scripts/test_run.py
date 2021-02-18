@@ -35,9 +35,7 @@ class NaviBot():
         self.target_id_sub = rospy.Subscriber('war_state', String, self.get_war_state)
 
     path_gws = os.path.dirname(__file__) + '/get_war_state.json'
-    path_ts = os.path.dirname(__file__) + '/target_state.txt'
-    # path_gws = '/home/satorunegishi/catkin_ws/src/burger_war/burger_war/scripts/get_war_state.json'
-    # path_ts = '/home/satorunegishi/catkin_ws/src/burger_war/burger_war/scripts/target_state.txt'     
+    path_ts = os.path.dirname(__file__) + '/target_state.json'
 
     def get_war_state(self, data):
         delword = ['\\n','\\',' ','\n']
@@ -49,10 +47,11 @@ class NaviBot():
             str_data = jw.join(str_data)
         json_data = str_data[6:len(str_data)-1]
 
-        with open(self.path_ts, mode='w') as f:
+        with open(self.path_gws, mode='w') as f:
             f.write(json_data)
         
         self.update_target_player()
+        self.search_enemy()
 
     def update_target_player(self):
         coordinate = [[-2,3],[-2,2],[2,3],[2,2],[-2,-2],[-2,-3],[2,-2],[2,-3],[0,1],[1,0],[-1,0],[0,-1]]
@@ -60,24 +59,30 @@ class NaviBot():
 
         with open(self.path_gws, mode='r') as f:
             json_load = json.load(f)
-        
+
+        with open(self.path_ts, mode='r') as f:
+            json_log = json.load(f)
+
+
+        status_dict = {}
+        status_dict_in = {}
         target_state = []
-
         for n in range(18):
-            target_state_in = []
+            target_state_in = {}
             if n > 5:
-                target_state_in.append(course[n-6])
-                target_state_in.append(coordinate[n-6])
-            
-            target_state_in.append(json_load["targets"][n]["name"])
-            target_state_in.append(json_load["targets"][n]["player"])
-
+                target_state_in["num"] = course[n-6]
+                target_state_in["coordinate"] = coordinate[n-6]
+            target_state_in["name"] = json_load["targets"][n]["name"]
+            target_state_in["player"] = json_load["targets"][n]["player"]
             target_state.append(target_state_in)
+        status_dict_in["targets"] = target_state
+        status_dict_in["time"] = json_load["time"]
+
+        status_dict["now"] = status_dict_in
+        status_dict["log"] = json_log["now"]
 
         with open(self.path_ts, mode='w') as f:
-            f.write(str(target_state))
-        
-        self.search_enemy()
+            json.dump(status_dict, f, indent=2)
 
     def setGoal(self,x,y,yaw):
         self.client.wait_for_server()
@@ -104,11 +109,14 @@ class NaviBot():
             return self.client.get_result()
 
     def search_enemy(self):
-        print("search_enemy!!")
-        # with open(self.path_ts, mode='r') as f:
-        #     for n in range(12):
-        #         if (status_log[n+6][3] == "n" or status_log[n+6][3] == "r") and f[n+6][3] == "b":
-        #             print(">>>>>>>>>>>",f[n+6][2])
+        with open(self.path_ts, mode='r') as f:
+            json_load = json.load(f)
+        
+        for n in range(18):
+            if json_load["now"]["targets"][n]["player"] == "b":
+                if (json_load["log"]["targets"][n]["player"] == "n") or (json_load["log"]["targets"][n]["player"] == "r"):
+                    print("enemy got:",json_load["now"]["targets"][n]["name"])
+                    distance = (json_load["log"]["targets"][n]["coordinate"][0] - json_load["log"]["targets"][n]["coordinate"][0])
 
     def updatePoint(self, direction):
         if direction > 0:
