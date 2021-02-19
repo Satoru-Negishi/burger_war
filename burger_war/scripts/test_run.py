@@ -129,7 +129,8 @@ class NaviBot():
             if n > 16:        
                 distance_x = (json_load["now"]["targets"][self.enemy_pos["n"]]["coordinate"][0] - json_load["now"]["targets"][self.you_pos["n"]]["coordinate"][0])
                 distance_y = (json_load["now"]["targets"][self.enemy_pos["n"]]["coordinate"][1] - json_load["now"]["targets"][self.you_pos["n"]]["coordinate"][1])
-                print(distance_x,distance_y)
+		distance = pow(pow(distance_x, 2), 0.5) + pow(pow(distance_y, 2), 0.5)
+		print(distance_x,distance_y,distance)
 
 
     def updatePoint(self, direction):
