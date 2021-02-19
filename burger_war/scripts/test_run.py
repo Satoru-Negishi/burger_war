@@ -36,6 +36,8 @@ class NaviBot():
 
     path_gws = os.path.dirname(__file__) + '/get_war_state.json'
     path_ts = os.path.dirname(__file__) + '/target_state.json'
+    enemy_pos = {"n":14,"num":7}
+    you_pos = {"n":17,"num":1}
 
     def get_war_state(self, data):
         delword = ['\\n','\\',' ','\n']
@@ -113,10 +115,22 @@ class NaviBot():
             json_load = json.load(f)
         
         for n in range(18):
+            if json_load["now"]["targets"][n]["player"] == "r":
+                if (json_load["log"]["targets"][n]["player"] == "n") or (json_load["log"]["targets"][n]["player"] == "b"):
+                    self.you_pos["num"] = json_load["now"]["targets"][n]["num"]
+                    self.you_pos["n"] = n
+                    print("you got:",self.you_pos["num"],json_load["now"]["targets"][n]["name"])
+
             if json_load["now"]["targets"][n]["player"] == "b":
                 if (json_load["log"]["targets"][n]["player"] == "n") or (json_load["log"]["targets"][n]["player"] == "r"):
-                    print("enemy got:",json_load["now"]["targets"][n]["name"])
-                    distance = (json_load["log"]["targets"][n]["coordinate"][0] - json_load["log"]["targets"][n]["coordinate"][0])
+                    self.enemy_pos["num"] = json_load["now"]["targets"][n]["num"]
+                    self.enemy_pos["n"] = n
+                    print("enemy got:",self.enemy_pos["num"],json_load["now"]["targets"][n]["name"])
+            if n > 16:        
+                distance_x = (json_load["now"]["targets"][self.enemy_pos["n"]]["coordinate"][0] - json_load["now"]["targets"][self.you_pos["n"]]["coordinate"][0])
+                distance_y = (json_load["now"]["targets"][self.enemy_pos["n"]]["coordinate"][1] - json_load["now"]["targets"][self.you_pos["n"]]["coordinate"][1])
+                print(distance_x,distance_y)
+
 
     def updatePoint(self, direction):
         if direction > 0:
