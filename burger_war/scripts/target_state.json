@@ -39,7 +39,7 @@
           -2, 
           2
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 5, 
         "name": "Tomato_S"
       }, 
@@ -48,7 +48,7 @@
           2, 
           3
         ], 
-        "player": "r", 
+        "player": "b", 
         "num": 8, 
         "name": "Omelette_N"
       }, 
@@ -57,7 +57,7 @@
           2, 
           2
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 9, 
         "name": "Omelette_S"
       }, 
@@ -66,7 +66,7 @@
           -2, 
           -2
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 3, 
         "name": "Pudding_N"
       }, 
@@ -75,7 +75,7 @@
           -2, 
           -3
         ], 
-        "player": "b", 
+        "player": "n", 
         "num": 2, 
         "name": "Pudding_S"
       }, 
@@ -84,7 +84,7 @@
           2, 
           -2
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 11, 
         "name": "OctopusWiener_N"
       }, 
@@ -102,7 +102,7 @@
           0, 
           1
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 7, 
         "name": "FriedShrimp_N"
       }, 
@@ -111,7 +111,7 @@
           1, 
           0
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 10, 
         "name": "FriedShrimp_E"
       }, 
@@ -120,7 +120,7 @@
           -1, 
           0
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 4, 
         "name": "FriedShrimp_W"
       }, 
@@ -134,7 +134,7 @@
         "name": "FriedShrimp_S"
       }
     ], 
-    "time": 391.9112310409546
+    "time": 26.550925970077515
   }, 
   "log": {
     "targets": [
@@ -176,7 +176,7 @@
           -2, 
           2
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 5, 
         "name": "Tomato_S"
       }, 
@@ -185,7 +185,7 @@
           2, 
           3
         ], 
-        "player": "r", 
+        "player": "b", 
         "num": 8, 
         "name": "Omelette_N"
       }, 
@@ -194,7 +194,7 @@
           2, 
           2
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 9, 
         "name": "Omelette_S"
       }, 
@@ -203,7 +203,7 @@
           -2, 
           -2
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 3, 
         "name": "Pudding_N"
       }, 
@@ -212,7 +212,7 @@
           -2, 
           -3
         ], 
-        "player": "b", 
+        "player": "n", 
         "num": 2, 
         "name": "Pudding_S"
       }, 
@@ -221,7 +221,7 @@
           2, 
           -2
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 11, 
         "name": "OctopusWiener_N"
       }, 
@@ -239,7 +239,7 @@
           0, 
           1
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 7, 
         "name": "FriedShrimp_N"
       }, 
@@ -248,7 +248,7 @@
           1, 
           0
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 10, 
         "name": "FriedShrimp_E"
       }, 
@@ -257,7 +257,7 @@
           -1, 
           0
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 4, 
         "name": "FriedShrimp_W"
       }, 
@@ -266,11 +266,11 @@
           0, 
           -1
         ], 
-        "player": "r", 
+        "player": "n", 
         "num": 1, 
         "name": "FriedShrimp_S"
       }
     ], 
-    "time": 388.8904528617859
+    "time": 23.536470890045166
   }
 }
