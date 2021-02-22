@@ -9,6 +9,7 @@ gnome-terminal -e "python judge/visualizeWindow.py"
 
 # init judge server for sim setting
 bash judge/test_scripts/init_single_play.sh judge/marker_set/sim.csv localhost:5000 you enemy
+# bash judge/test_scripts/init_single_play.sh judge/marker_set/sim.csv localhost:5000  enemy you
 
 # robot
 roslaunch burger_war setup_sim.launch

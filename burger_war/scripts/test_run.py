@@ -23,6 +23,7 @@ import actionlib_msgs
 #import cv2
 
 import json
+import random
 import re
 import os
 from aruco_msgs.msg import MarkerArray
@@ -36,8 +37,9 @@ class NaviBot():
 
     path_gws = os.path.dirname(__file__) + '/get_war_state.json'
     path_ts = os.path.dirname(__file__) + '/target_state.json'
-    enemy_pos = {"n":14,"num":7}
-    you_pos = {"n":17,"num":1}
+    blue_pos = {"n":14,"num":7}
+    red_pos = {"n":17,"num":1}
+    distance = 4
 
     def get_war_state(self, data):
         delword = ['\\n','\\',' ','\n']
@@ -117,21 +119,21 @@ class NaviBot():
         for n in range(18):
             if json_load["now"]["targets"][n]["player"] == "r":
                 if (json_load["log"]["targets"][n]["player"] == "n") or (json_load["log"]["targets"][n]["player"] == "b"):
-                    self.you_pos["num"] = json_load["now"]["targets"][n]["num"]
-                    self.you_pos["n"] = n
-                    print("you got:",self.you_pos["num"],json_load["now"]["targets"][n]["name"])
+                    self.red_pos["num"] = json_load["now"]["targets"][n]["num"]
+                    self.red_pos["n"] = n
+                    print("red got:",self.red_pos["num"],json_load["now"]["targets"][n]["name"])
 
             if json_load["now"]["targets"][n]["player"] == "b":
                 if (json_load["log"]["targets"][n]["player"] == "n") or (json_load["log"]["targets"][n]["player"] == "r"):
-                    self.enemy_pos["num"] = json_load["now"]["targets"][n]["num"]
-                    self.enemy_pos["n"] = n
-                    print("enemy got:",self.enemy_pos["num"],json_load["now"]["targets"][n]["name"])
+                    self.blue_pos["num"] = json_load["now"]["targets"][n]["num"]
+                    self.blue_pos["n"] = n
+                    print("blue got:",self.blue_pos["num"],json_load["now"]["targets"][n]["name"])
             if n > 16:        
-                distance_x = (json_load["now"]["targets"][self.enemy_pos["n"]]["coordinate"][0] - json_load["now"]["targets"][self.you_pos["n"]]["coordinate"][0])
-                distance_y = (json_load["now"]["targets"][self.enemy_pos["n"]]["coordinate"][1] - json_load["now"]["targets"][self.you_pos["n"]]["coordinate"][1])
-                distance = pow(pow(distance_x, 2), 0.5) + pow(pow(distance_y, 2), 0.5)
-                print(distance_x,distance_y,distance)
-
+                distance_x = (json_load["now"]["targets"][self.blue_pos["n"]]["coordinate"][0] - json_load["now"]["targets"][self.red_pos["n"]]["coordinate"][0])
+                distance_y = (json_load["now"]["targets"][self.blue_pos["n"]]["coordinate"][1] - json_load["now"]["targets"][self.red_pos["n"]]["coordinate"][1])
+                self.distance = pow(pow(distance_x, 2), 0.5) + pow(pow(distance_y, 2), 0.5)
+                print(distance_x,distance_y,self.distance)
+        
 
     def updatePoint(self, direction):
         if direction > 0:
@@ -145,11 +147,20 @@ class NaviBot():
         
         home_position = [[-0.8, 0, math.radians(0)],[-0.4, 0, math.radians(0)]]
 
+        # goal_point = [
+        #     [[-0.4, 0, math.radians(0)],[-1.0, 0, math.radians(0)],[-0.85, 0.5 + ccw_ang * 0.07, math.radians(cw_ang * 20)]], #[0] home goal point,
+        #     [[0.15, 0.65, math.radians(invert_ang + 335)],[0.15, 0.45, math.radians(invert_ang + 225)],[-0.15, 0.45, math.radians(invert_ang + 135)],[-0.15, 0.65, math.radians(invert_ang + 25)]], #[1] left goal point
+        #     [[0.85, 0.5 + cw_ang * 0.07, math.radians(ccw_ang * 160)],[0.45, 0, math.radians(180)],[0.85, -0.5 - ccw_ang * 0.07, math.radians(cw_ang * 200)]], #[2] enemy goal point
+        #     [[-0.15, -0.65, math.radians(invert_ang + 155)],[-0.15, -0.45, math.radians(invert_ang + 45)],[0.15, -0.45, math.radians(invert_ang + 335)],[0.15, -0.65, math.radians(invert_ang + 225)]], #[3] right goal point
+        #     [[-0.85, -0.5 - cw_ang * 0.07, math.radians(ccw_ang * 340)]],
+        #             ]
+
         goal_point = [
-            [-0.4, 0, math.radians(0)], #[0] home goal point
+            [[-0.4, 0, math.radians(0)],[-1.0, 0, math.radians(0)],[-0.85, 0.4, math.radians(cw_ang * 20)]], #[0] home goal point,
             [[0.15, 0.65, math.radians(invert_ang + 335)],[0.15, 0.45, math.radians(invert_ang + 225)],[-0.15, 0.45, math.radians(invert_ang + 135)],[-0.15, 0.65, math.radians(invert_ang + 25)]], #[1] left goal point
-            [0.45, 0, math.radians(180)], #[2] enemy goal point
+            [[0.85, 0.4, math.radians(ccw_ang * 200)],[0.45, 0, math.radians(180)],[0.85, -0.4, math.radians(cw_ang * 200)]], #[2] enemy goal point
             [[-0.15, -0.65, math.radians(invert_ang + 155)],[-0.15, -0.45, math.radians(invert_ang + 45)],[0.15, -0.45, math.radians(invert_ang + 335)],[0.15, -0.65, math.radians(invert_ang + 225)]], #[3] right goal point
+            [[-0.85, -0.4, math.radians(ccw_ang * 20)]],
                     ]
 
         in_way = [
@@ -160,55 +171,73 @@ class NaviBot():
         ]
 
         out_way = [
-            [[-1.0, 0, math.radians(0)],[-0.85, 0.5 + ccw_ang * 0.07, math.radians(cw_ang * 20)],[-0.73, 0.73, math.radians(invert_ang + 45)]], #[0] home <-> left out
-            [[0.73, 0.73, math.radians(invert_ang + 315)],[0.9, 0.5 + cw_ang * 0.07, math.radians(ccw_ang * 160)]], #[1] left <-> enemy out
-            [[1.0, 0, math.radians(180)],[0.9, -0.5 - ccw_ang * 0.07, math.radians(cw_ang * 210)],[0.73, -0.73, math.radians(invert_ang + 225)]], #[2] enemy <-> right out
-            [[-0.73, -0.73, math.radians(invert_ang + 135)],[-0.87, -0.5 - cw_ang * 0.05, math.radians(ccw_ang * 340)]], #[3] right <-> home out
+            [-0.73, 0.73, math.radians(invert_ang + 45)], #[0] home <-> left out
+            [0.73, 0.73, math.radians(invert_ang + 315)], #[1] left <-> enemy out
+            [0.73, -0.73, math.radians(invert_ang + 225)], #[2] enemy <-> right out
+            [-0.73, -0.73, math.radians(invert_ang + 135)], #[3] right <-> home out
         ]
-        return home_position, goal_point, out_way 
+        return home_position, goal_point, in_way, out_way 
+
+    def uw(self, direction):
+        roop = 1
+        (home_position, goal_point, in_way, out_way) = self.updatePoint(direction)
+        for num in range(5):
+            (home_position, goal_point, in_way, out_way) = self.updatePoint(direction)
+            for n in range(len(goal_point[num])):
+                    self.setGoal(goal_point[num][n][0], goal_point[num][n][1], goal_point[num][n][2])
+            if self.distance < 5:
+                if num < 4:
+                    self.setGoal(out_way[num][0], out_way[num][1], out_way[num][2])
+            else:
+                if num < 4:
+                    self.setGoal(in_way[num][0], in_way[num][1], in_way[num][2])
+        for n in range(2):
+            self.setGoal(home_position[n][0], home_position[n][1], home_position[n][2])
 
     def cw(self, direction):
         roop = 1
         for num in range(4):
-            (home_position, goal_point, way_point) = self.updatePoint(direction)
+            (home_position, goal_point, in_way, out_way) = self.updatePoint(direction)
             
             #self.setGoal(goal_point[num][0], goal_point[num][1], goal_point[num][2])
             if roop == -1:
                 calc_num = 2 * num
-                self.setGoal(way_point[calc_num][0], way_point[calc_num][1], way_point[calc_num][2])
+                self.setGoal(out_way[calc_num][0], out_way[calc_num][1], out_way[calc_num][2])
+            elif self.distance > 5:
+                self.setGoal(in_way[num][0], in_way[num][1], in_way[2])
             else:
                 if num % 2 != 0:
                     for n in range(4):
                         self.setGoal(goal_point[num][n][0], goal_point[num][n][1], goal_point[num][n][2])
                     for n in range(2):    
-                        self.setGoal(way_point[num][n][0], way_point[num][n][1], way_point[num][n][2])
+                        self.setGoal(out_way[num][n][0], out_way[num][n][1], out_way[num][n][2])
                 else:
                     self.setGoal(goal_point[num][0], goal_point[num][1], goal_point[num][2])
                     for n in range(3):
-                        self.setGoal(way_point[num][n][0], way_point[num][n][1], way_point[num][n][2])
+                        self.setGoal(out_way[num][n][0], out_way[num][n][1], out_way[num][n][2])
         for n in range(2):
             self.setGoal(home_position[n][0], home_position[n][1], home_position[n][2])
             
 
     def ccw(self, direction):
         roop = 1
-        (home_position, goal_point, way_point) = self.updatePoint(direction)
+        (home_position, goal_point, in_way ,out_way) = self.updatePoint(direction)
         for n in range(2):
             self.setGoal(home_position[n][0], home_position[n][1], home_position[n][2])
         for num in reversed(range(4)):
-            (home_position, goal_point, way_point) = self.updatePoint(direction)
+            (home_position, goal_point, in_way ,out_way) = self.updatePoint(direction)
             if roop == -1:
                 calc_num = 2 * num
-                self.setGoal(way_point[calc_num][0], way_point[calc_num][1], way_point[calc_num][2])
+                self.setGoal(out_way[calc_num][0], out_way[calc_num][1], out_way[calc_num][2])
             else:
                 if num % 2 != 0:
                     for n in reversed(range(2)):    
-                        self.setGoal(way_point[num][n][0], way_point[num][n][1], way_point[num][n][2])
+                        self.setGoal(out_way[num][n][0], out_way[num][n][1], out_way[num][n][2])
                     for n in reversed(range(4)):
                         self.setGoal(goal_point[num][n][0], goal_point[num][n][1], goal_point[num][n][2])
                 else:
                     for n in reversed(range(3)):
-                        self.setGoal(way_point[num][n][0], way_point[num][n][1], way_point[num][n][2]) 
+                        self.setGoal(out_way[num][n][0], out_way[num][n][1], out_way[num][n][2]) 
                     self.setGoal(goal_point[num][0], goal_point[num][1], goal_point[num][2])
      
 
@@ -219,11 +248,11 @@ class NaviBot():
         direction = 1
         while True:
             if direction > 0:
-                self.cw(direction)
+                self.uw(direction)
             else:
-                self.ccw(direction)            
+                self.uw(direction)            
             roop = roop + 1
-            direction = direction * -1
+            # direction = direction * -1
 
 if __name__ == '__main__':
     rospy.init_node('test_run')

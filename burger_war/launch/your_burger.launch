@@ -11,6 +11,7 @@
   </include>
 
     <node pkg="burger_war" type="test_run.py" name="test_run" output="screen"/>
+      <param name="side" value="$(arg side)" />
 
     <!-- END sample program node -->
 

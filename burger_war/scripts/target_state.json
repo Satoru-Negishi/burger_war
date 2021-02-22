@@ -30,7 +30,7 @@
           -2, 
           3
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 6, 
         "name": "Tomato_N"
       }, 
@@ -39,7 +39,7 @@
           -2, 
           2
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 5, 
         "name": "Tomato_S"
       }, 
@@ -48,7 +48,7 @@
           2, 
           3
         ], 
-        "player": "b", 
+        "player": "r", 
         "num": 8, 
         "name": "Omelette_N"
       }, 
@@ -57,7 +57,7 @@
           2, 
           2
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 9, 
         "name": "Omelette_S"
       }, 
@@ -66,7 +66,7 @@
           -2, 
           -2
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 3, 
         "name": "Pudding_N"
       }, 
@@ -75,7 +75,7 @@
           -2, 
           -3
         ], 
-        "player": "n", 
+        "player": "b", 
         "num": 2, 
         "name": "Pudding_S"
       }, 
@@ -84,7 +84,7 @@
           2, 
           -2
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 11, 
         "name": "OctopusWiener_N"
       }, 
@@ -93,7 +93,7 @@
           2, 
           -3
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 12, 
         "name": "OctopusWiener_S"
       }, 
@@ -102,7 +102,7 @@
           0, 
           1
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 7, 
         "name": "FriedShrimp_N"
       }, 
@@ -111,7 +111,7 @@
           1, 
           0
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 10, 
         "name": "FriedShrimp_E"
       }, 
@@ -120,7 +120,7 @@
           -1, 
           0
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 4, 
         "name": "FriedShrimp_W"
       }, 
@@ -134,7 +134,7 @@
         "name": "FriedShrimp_S"
       }
     ], 
-    "time": 26.550925970077515
+    "time": 0.0
   }, 
   "log": {
     "targets": [
@@ -167,7 +167,7 @@
           -2, 
           3
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 6, 
         "name": "Tomato_N"
       }, 
@@ -176,7 +176,7 @@
           -2, 
           2
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 5, 
         "name": "Tomato_S"
       }, 
@@ -185,7 +185,7 @@
           2, 
           3
         ], 
-        "player": "b", 
+        "player": "r", 
         "num": 8, 
         "name": "Omelette_N"
       }, 
@@ -194,7 +194,7 @@
           2, 
           2
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 9, 
         "name": "Omelette_S"
       }, 
@@ -203,7 +203,7 @@
           -2, 
           -2
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 3, 
         "name": "Pudding_N"
       }, 
@@ -212,7 +212,7 @@
           -2, 
           -3
         ], 
-        "player": "n", 
+        "player": "b", 
         "num": 2, 
         "name": "Pudding_S"
       }, 
@@ -221,7 +221,7 @@
           2, 
           -2
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 11, 
         "name": "OctopusWiener_N"
       }, 
@@ -230,7 +230,7 @@
           2, 
           -3
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 12, 
         "name": "OctopusWiener_S"
       }, 
@@ -239,7 +239,7 @@
           0, 
           1
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 7, 
         "name": "FriedShrimp_N"
       }, 
@@ -248,7 +248,7 @@
           1, 
           0
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 10, 
         "name": "FriedShrimp_E"
       }, 
@@ -257,7 +257,7 @@
           -1, 
           0
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 4, 
         "name": "FriedShrimp_W"
       }, 
@@ -266,11 +266,11 @@
           0, 
           -1
         ], 
-        "player": "n", 
+        "player": "r", 
         "num": 1, 
         "name": "FriedShrimp_S"
       }
     ], 
-    "time": 23.536470890045166
+    "time": 0.0
   }
 }
